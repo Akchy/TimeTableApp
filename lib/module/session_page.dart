@@ -163,6 +163,7 @@ class _SessionPageState extends State<SessionPage> {
                       autofocus: true,
                       textInputAction: TextInputAction.next,
                       textCapitalization: TextCapitalization.words,
+                      maxLength: 10,
                       decoration: new InputDecoration(
                         labelText: "Session Name",
                         fillColor: Colors.white,
@@ -513,6 +514,7 @@ class _SessionPageState extends State<SessionPage> {
                             //autofocus: true,
                             textInputAction: TextInputAction.next,
                             textCapitalization: TextCapitalization.words,
+                            maxLength: 10,
                             decoration: new InputDecoration(
                               labelText: "Session Name",
                               fillColor: Colors.white,

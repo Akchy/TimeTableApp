@@ -131,6 +131,7 @@ class _HomePageState extends State<HomePage> {
   var currDay;
   var breakTime=false;
   var ready=false;
+  bool darkTheme =false;
 
   @override
   void initState() {
@@ -281,7 +282,25 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('Class Time', style: TextStyle(color: Colors.white,fontSize: 20),),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Class Time', style: TextStyle(color: Colors.white,fontSize: 20),),
+                    GestureDetector(
+                      onTap: ()async{
+                        setState(() {
+                          darkTheme=!darkTheme;
+                        });
+                        final SharedPreferences prefs = await _prefs;
+                        await prefs.setBool('darkTheme',darkTheme);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Icon((darkTheme)?Icons.nights_stay_outlined:Icons.wb_sunny_outlined),
+                      ),
+                    )
+                  ],
+                ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                 ),

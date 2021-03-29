@@ -201,7 +201,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
   Widget classContainer(var currClass){
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).highlightColor,
+        color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -221,7 +221,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom:8.0),
+            padding: const EdgeInsets.only(bottom:8.0,left: 3,right: 3),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

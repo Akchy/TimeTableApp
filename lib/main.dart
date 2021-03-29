@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'module/export_page.dart';
 import 'module/home_page.dart';
 import 'module/session_page.dart';
@@ -18,10 +19,37 @@ void main() {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
 
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  var theme = ThemeMode.system;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkSharedPref();
+  }
+
+  void checkSharedPref() async{
+
+    final SharedPreferences prefs = await _prefs;
+    var dark = prefs.getBool('darkTheme')??false;
+    setState(() {
+      if(dark)
+        theme = ThemeMode.dark;
+      else
+        theme = ThemeMode.light;
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    checkSharedPref();
     return MaterialApp(
       title: 'Time Table',
       theme: ThemeData(
@@ -46,7 +74,7 @@ class MyApp extends StatelessWidget {
 
         /* dark theme settings */
       ),
-      themeMode: ThemeMode.system,
+      themeMode: theme,
       /* ThemeMode.system to follow system theme,
          ThemeMode.light for light theme,
          ThemeMode.dark for dark theme
