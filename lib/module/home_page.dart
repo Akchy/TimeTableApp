@@ -155,7 +155,6 @@ class _HomePageState extends State<HomePage> {
     var tt = prefs.getString('timetable')??'';
     var link = prefs.getString('links')??'';
     var sess = prefs.getString('sessions')??'';
-    print('$tt -- $link -- $sess');
 
     if(tt.length!=0) {
       setState(() {
@@ -218,19 +217,17 @@ class _HomePageState extends State<HomePage> {
       int currentTime = now.hour * 60 + now.minute; //Current Time in Min
 
       var sTimeToday=[],eTimeToday=[];
-      print('ttDay: $ttDay');
       for(var x in ttDay){
         sTimeToday.add(x['sTime']);
         eTimeToday.add(x['eTime']);
       }
-      print('sTimeToday: $sTimeToday');
+      var dayEndTime = strToTime(eTimeToday[eTimeToday.length-1]);
       for (var start in sTimeToday ){
-        print('time: $start');
         var sessionTime = strToTime(start);
         var sessionIndex = sTimeToday.indexOf(start);
         var endTime = eTimeToday[sessionIndex];
         var sessionEndTime = strToTime(endTime);
-        if(sessionTime <= currentTime){
+        if(sessionTime <= currentTime && currentTime<= dayEndTime){
           if(sessionEndTime >= currentTime)
             setState(() {
               timingColor[sessionIndex] = 1;    //Current Hour
@@ -242,19 +239,19 @@ class _HomePageState extends State<HomePage> {
         }
         else
           setState(() {
-            timingColor[sessionIndex] = 2;    //Current Hour
+            timingColor[sessionIndex] = 2;    //Upcoming Hour
           });
       }
-      var breakFound=1,sessionOver=1;
+      var breakFound=1,sessionStarted=0;
       for(var x in timingColor){
+        if(x==0) {
+          sessionStarted = 1;
+        }
         if(x==1) {
           breakFound = 0;
         }
-        if(x==2){
-          sessionOver=0;
-        }
       }
-      if(breakFound==1 && sessionOver!=1)
+      if(sessionStarted==1 && breakFound==1 && currentTime<dayEndTime)
         setState(() {
           breakTime=true;
         });
@@ -262,8 +259,6 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           breakTime=false;
         });
-      if(sessionOver==1)
-        initialTimeColor();
     }
     else{
       setState(() {
