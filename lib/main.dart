@@ -26,7 +26,32 @@ class MyApp extends StatelessWidget {
       title: 'Time Table',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        primaryColorLight: Colors.blue,
+        iconTheme: IconThemeData(
+          color: Colors.blue
+        ),
+        highlightColor: Colors.blue[400],
+        cardColor: Colors.yellow[800]
+
+        /* light theme settings */
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.cyanAccent
+        ),
+        errorColor: Colors.redAccent,
+
+
+        /* dark theme settings */
+      ),
+      themeMode: ThemeMode.system,
+      /* ThemeMode.system to follow system theme,
+         ThemeMode.light for light theme,
+         ThemeMode.dark for dark theme
+      */
+      debugShowCheckedModeBanner: false,
       home: MainPage(),
       routes: {
         Routes.home: (context) => HomePage(),

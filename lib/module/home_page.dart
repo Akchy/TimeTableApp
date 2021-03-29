@@ -283,17 +283,17 @@ class _HomePageState extends State<HomePage> {
               DrawerHeader(
                 child: Text('Class Time', style: TextStyle(color: Colors.white,fontSize: 20),),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               ListTile(
-                  title: Text('Home',style: TextStyle(color: Colors.black),),
-                  leading: Icon(Icons.home,color: Colors.black,),
+                  title: Text('Home'),
+                  leading: Icon(Icons.home),
                   onTap: ()=>Navigator.pop(context)
               ),
               ListTile(
-                  title: Text('Sessions',style: TextStyle(color: Colors.black),),
-                  leading: Icon(Icons.book_online,color: Colors.black,),
+                  title: Text('Sessions',),
+                  leading: Icon(Icons.book_online,),
                   onTap: ()async{
                     Navigator.pop(context);
                     var flag =await Navigator.pushNamed(context, Routes.session)??false;
@@ -302,8 +302,8 @@ class _HomePageState extends State<HomePage> {
                   }
               ),
               ListTile(
-                  title: Text('Time Table',style: TextStyle(color: Colors.black),),
-                  leading: Icon(Icons.edit_outlined,color: Colors.black,),
+                  title: Text('Time Table'),
+                  leading: Icon(Icons.edit_outlined,),
                   onTap: ()async{
                     Navigator.pop(context);
                     var flag =await Navigator.pushNamed(context, Routes.timetable)??false;
@@ -314,8 +314,8 @@ class _HomePageState extends State<HomePage> {
               ),
 
               ListTile(
-                  title: Text('Export',style: TextStyle(color: Colors.black),),
-                  leading: Icon(Icons.share_outlined,color: Colors.black,),
+                  title: Text('Export',),
+                  leading: Icon(Icons.share_outlined,),
                   onTap: ()async{
                     Navigator.pop(context);
                     var flag =await
@@ -413,7 +413,8 @@ class _HomePageState extends State<HomePage> {
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.4),
                             spreadRadius: 2,
-                            blurRadius: 7, // changes position of shadow
+                            blurRadius: 4,
+                            offset: Offset(1, 3),
                           ),
                         ],
                       ),
@@ -451,7 +452,7 @@ class _HomePageState extends State<HomePage> {
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.fromLTRB(20,0,10,20),
       decoration: BoxDecoration(
-        color: Colors.yellow[800],
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -492,8 +493,9 @@ class _HomePageState extends State<HomePage> {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.4),
-              spreadRadius: 2,
-              blurRadius: 7, // changes position of shadow
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: Offset(0, 3),
             ),
           ],
         ),

@@ -192,13 +192,12 @@ class _DayTimeTableState extends State<DayTimeTable> {
             children: [
               Center(
                 child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-                  backgroundColor: Colors.white,
+                  valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorLight),
+                  backgroundColor: Colors.transparent,
                 ),
               ),
               SizedBox(height: 10.0),
               Text('Loading',style: TextStyle(
-                  color: Colors.blue,
                   fontWeight: FontWeight.w400,
                   fontSize: 18.0
               ),)
@@ -234,7 +233,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
       margin: EdgeInsets.all(8),
       padding: EdgeInsets.fromLTRB(20,10,10,25),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -245,7 +244,8 @@ class _DayTimeTableState extends State<DayTimeTable> {
           BoxShadow(
             color: Colors.grey.withOpacity(0.4),
             spreadRadius: 2,
-            blurRadius: 7, // changes position of shadow
+            blurRadius: 4,
+            offset: Offset(1, 3),
           ),
         ],
       ),
@@ -270,7 +270,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                         elevation: 16,
                         underline: Container(
                           height: 2,
-                          color: Colors.black,
+                          color: Theme.of(context).primaryColorDark,
                         ),
                         onChanged: (String newValue) {
                           setState(() {
@@ -305,7 +305,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                               }
                             },
                             child: Text(newStartTime,style: TextStyle(color: Colors.white),),
-                            color: Colors.lightBlueAccent,
+                            color: Theme.of(context).highlightColor,
                           ),
                       ),
                       SizedBox(width: 20,),
@@ -323,7 +323,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                             }
                           },
                           child: Text(newEndTime,style: TextStyle(color: Colors.white),),
-                          color: Colors.lightBlueAccent,
+                          color: Theme.of(context).highlightColor,
                         ),
                       )
                     ],
@@ -360,7 +360,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.save_outlined,color: Colors.blue,)
+                    child: Icon(Icons.save_outlined)
                 ),
               ),
               GestureDetector(
@@ -375,7 +375,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.cancel_outlined,color: Colors.red,)
+                    child: Icon(Icons.cancel_outlined,color: Theme.of(context).errorColor)
                 ),
               ),
             ],
@@ -388,7 +388,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
       margin: EdgeInsets.all(8),
       padding: EdgeInsets.fromLTRB(20,10,10,10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -399,7 +399,8 @@ class _DayTimeTableState extends State<DayTimeTable> {
           BoxShadow(
             color: Colors.grey.withOpacity(0.4),
             spreadRadius: 2,
-            blurRadius: 7, // changes position of shadow
+            blurRadius: 4,
+            offset: Offset(1, 3),
           ),
         ],
       ),
@@ -415,18 +416,18 @@ class _DayTimeTableState extends State<DayTimeTable> {
                   children: [
                     Text(
                       sessions[session['name']],
-                      style: TextStyle(fontSize: 18,color:Colors.black,fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
                       textAlign: TextAlign.justify,
                     ),
                     SizedBox(width: 10,),
                     Text(
                       '[ ${session['sTime']} - ',
-                      style: TextStyle(fontSize: 18,color:Colors.black),
+                      style: TextStyle(fontSize: 18,),
                       textAlign: TextAlign.justify,
                     ),
                     Text(
                       '${session['eTime']} ]',
-                      style: TextStyle(fontSize: 18,color:Colors.black),
+                      style: TextStyle(fontSize: 18,),
                       textAlign: TextAlign.justify,
                     ),
                   ],
@@ -434,7 +435,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                 SizedBox(height: 5,),
                 Text(
                   links[session['name']]??'',
-                  style: TextStyle(fontSize: 18,color:Colors.black,),
+                  style: TextStyle(fontSize: 18,),
                   textAlign: TextAlign.justify,
                 )
               ],
@@ -467,7 +468,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.edit_outlined,color: Colors.blue,)),
+                    child: Icon(Icons.edit_outlined,)),
               ),
               GestureDetector(
                 onTap:() => deleteDialog(session),
@@ -476,7 +477,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.delete_outline,color: Colors.red,)),
+                    child: Icon(Icons.delete_outline,color: Theme.of(context).errorColor)),
               ),
             ],
           ),
@@ -618,7 +619,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
             padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.0),
-              color: Colors.white,
+              color: Theme.of(context).bottomAppBarColor,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -675,7 +676,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                                 }
                               },
                               child: Text(newStartTime,style: TextStyle(color: Colors.white),),
-                              color: Colors.lightBlue,
+                              color: Theme.of(context).highlightColor,
                             ),
                           ),
                           SizedBox(width: 10,),
@@ -694,7 +695,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                                 }
                               },
                               child: Text(newEndTime,style: TextStyle(color: Colors.white),),
-                              color: Colors.lightBlue,
+                              color: Theme.of(context).highlightColor,
                             ),
                           )
                         ],

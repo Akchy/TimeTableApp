@@ -91,13 +91,12 @@ class _SessionPageState extends State<SessionPage> {
               children: [
                 Center(
                   child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-                    backgroundColor: Colors.white,
+                    valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorLight),
+                    backgroundColor: Colors.transparent,
                   ),
                 ),
                 SizedBox(height: 10.0),
                 Text('Loading',style: TextStyle(
-                    color: Colors.blue,
                     fontWeight: FontWeight.w400,
                     fontSize: 18.0
                 ),)
@@ -134,7 +133,7 @@ class _SessionPageState extends State<SessionPage> {
         margin: EdgeInsets.all(8),
         padding: EdgeInsets.fromLTRB(20,10,10,25),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).bottomAppBarColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
@@ -145,7 +144,8 @@ class _SessionPageState extends State<SessionPage> {
             BoxShadow(
               color: Colors.grey.withOpacity(0.4),
               spreadRadius: 2,
-              blurRadius: 7, // changes position of shadow
+              blurRadius: 4,
+                offset: Offset(1, 3),
             ),
           ],
         ),
@@ -227,7 +227,7 @@ class _SessionPageState extends State<SessionPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.save_outlined,color: Colors.blue,)
+                      child: Icon(Icons.save_outlined,)
                   ),
                 ),
                 GestureDetector(
@@ -242,7 +242,7 @@ class _SessionPageState extends State<SessionPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.cancel_outlined,color: Colors.red,)
+                      child: Icon(Icons.cancel_outlined,color: Theme.of(context).errorColor,)
                   ),
                 ),
               ],
@@ -267,7 +267,7 @@ class _SessionPageState extends State<SessionPage> {
           margin: EdgeInsets.all(8),
           padding: EdgeInsets.fromLTRB(20,10,10,10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).bottomAppBarColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
@@ -278,7 +278,8 @@ class _SessionPageState extends State<SessionPage> {
               BoxShadow(
                 color: Colors.grey.withOpacity(0.4),
                 spreadRadius: 2,
-                blurRadius: 7, // changes position of shadow
+                blurRadius: 4,
+                offset: Offset(1, 3),
               ),
             ],
           ),
@@ -293,13 +294,13 @@ class _SessionPageState extends State<SessionPage> {
                   children: [
                     Text(
                       sessions[sessionName],
-                      style: TextStyle(fontSize: 18,color:Colors.black,fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
                       textAlign: TextAlign.justify,
                     ),
                     SizedBox(height: 5,),
                     Text(
                       sessionLink,
-                      style: TextStyle(fontSize: 18,color:Colors.black,),
+                      style: TextStyle(fontSize: 18),
                       textAlign: TextAlign.justify,
                     )
                   ],
@@ -331,7 +332,7 @@ class _SessionPageState extends State<SessionPage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.edit_outlined,color: Colors.blue,)),
+                        child: Icon(Icons.edit_outlined,)),
                   ),
                   GestureDetector(
                     onTap:() => deleteDialog(sessionName),
@@ -340,7 +341,7 @@ class _SessionPageState extends State<SessionPage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.delete_outline,color: Colors.red,)),
+                        child: Icon(Icons.delete_outline,color: Theme.of(context).errorColor,)),
                   ),
                 ],
               ),
@@ -489,7 +490,7 @@ class _SessionPageState extends State<SessionPage> {
                 padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.0),
-                  color: Colors.white,
+                  color: Theme.of(context).bottomAppBarColor,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

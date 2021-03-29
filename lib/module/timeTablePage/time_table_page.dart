@@ -67,13 +67,12 @@ class _TimeTablePageState extends State<TimeTablePage> {
                 children: [
                   Center(
                     child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-                      backgroundColor: Colors.white,
+                      valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorLight),
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
                   SizedBox(height: 10.0),
                   Text('Loading',style: TextStyle(
-                      color: Colors.blue,
                       fontWeight: FontWeight.w400,
                       fontSize: 18.0
                   ),)
@@ -98,7 +97,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
       margin: EdgeInsets.all(9),
       padding: EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
@@ -108,9 +107,9 @@ class _TimeTablePageState extends State<TimeTablePage> {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: Offset(1, 3),
           ),
         ],
       ),
@@ -137,7 +136,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.add_box_outlined,color: Colors.green,)),
+                        child: Icon(Icons.add_box_outlined,)),
                     ):
                     InkWell(
                       onTap: ()async{
@@ -151,7 +150,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.edit_outlined,color: Colors.blue,)),
+                        child: Icon(Icons.edit_outlined)),
                     ) ,
                   ],
                 ),
@@ -162,7 +161,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.delete_outline,color: Colors.red,)
+                      child: Icon(Icons.delete_outline,color: Theme.of(context).errorColor,)
                     ),
                   ),
                   onTap: ()=>deleteDialog(day),
@@ -202,20 +201,13 @@ class _TimeTablePageState extends State<TimeTablePage> {
   Widget classContainer(var currClass){
     return Container(
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: Theme.of(context).highlightColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(10)
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.4),
-            spreadRadius: 2,
-            blurRadius: 7, // changes position of shadow
-          ),
-        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,20 +240,13 @@ class _TimeTablePageState extends State<TimeTablePage> {
       height: 100,
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: Colors.lightGreen,
+        color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(10)
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.4),
-            spreadRadius: 2,
-            blurRadius: 7, // changes position of shadow
-          ),
-        ],
       ),
       child: Center(child: Text('Hola! A free Day.',style: TextStyle(fontSize: 20),)),
     );
