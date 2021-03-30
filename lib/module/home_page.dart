@@ -300,7 +300,8 @@ class _HomePageState extends State<HomePage> {
                         await prefs.setBool('darkTheme',darkTheme);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        color: Colors.transparent,
+                        padding: EdgeInsets.all(20),
                         child: Icon((darkTheme)?Icons.nights_stay_outlined:Icons.wb_sunny_outlined,color: Colors.white,),
                       ),
                     )
@@ -357,7 +358,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         appBar: AppBar(
-          title: Text('Time Table'),
+          title: Text('Class Time'),
         ),
         body: (ready)?Container(
             child: SingleChildScrollView(

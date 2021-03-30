@@ -659,7 +659,9 @@ class _DayTimeTableState extends State<DayTimeTable> {
                         ],
                       ),
 
-                      SizedBox(height: 15,),
+                      SizedBox(height: 10,),
+                      Text('Note: Goto Sessions in Menu > Create Session', style: TextStyle(fontSize: 13),textAlign: TextAlign.center,),
+                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Expanded(
@@ -721,7 +723,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                         onPressed: ()async{
                           var sTemp = strToTime(newStartTime);
                           var eTemp = strToTime(newEndTime);  // Checking if end time is greater than less time
-                          if (sTemp<eTemp) {
+                          if (sTemp<eTemp && dropdownValue!=null) {
                             Map<String,String> newSession={};
                             newSession['name']=dropdownValue;
                             newSession['sTime']=newStartTime;
@@ -741,6 +743,16 @@ class _DayTimeTableState extends State<DayTimeTable> {
                             });
                             final SharedPreferences prefs = await _prefs;
                             await prefs.setString('timetable', jsonEncode(timeTable));
+                          }
+                          else if(dropdownValue==null){
+
+                            final snackBar = SnackBar(
+                              behavior: SnackBarBehavior.floating,elevation: 6,
+                              margin: EdgeInsets.all(10),
+                              duration: Duration(seconds: 5),
+                              content: Center(heightFactor: 1,child: Text('Select a Session')),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           }
                           else{
                             final snackBar = SnackBar(
