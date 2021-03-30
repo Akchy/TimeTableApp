@@ -103,7 +103,7 @@ class _ExportDBState extends State<ExportDB> {
                 child: (!import)? RepaintBoundary(
                   key: globalKey,
                   child: QrImage(
-                    gapless: true,
+                    gapless: false,
                     backgroundColor: Colors.white,
                     data: _dataString,
                     size: MediaQuery.of(context).size.width,
