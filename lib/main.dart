@@ -26,7 +26,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   var theme = ThemeMode.system;
 
   @override
@@ -38,6 +37,7 @@ class _MyAppState extends State<MyApp> {
 
   void checkSharedPref() async{
 
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
     var dark = prefs.getBool('darkTheme')??false;
     setState(() {
@@ -60,7 +60,6 @@ class _MyAppState extends State<MyApp> {
           color: Colors.blue
         ),
         highlightColor: Colors.blue[400],
-        cardColor: Colors.yellow[800]
 
         /* light theme settings */
       ),

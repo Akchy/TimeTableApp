@@ -163,7 +163,7 @@ class _SessionPageState extends State<SessionPage> {
                       autofocus: true,
                       textInputAction: TextInputAction.next,
                       textCapitalization: TextCapitalization.words,
-                      maxLength: 10,
+                      maxLength: 12,
                       decoration: new InputDecoration(
                         labelText: "Session Name",
                         fillColor: Colors.white,
@@ -514,7 +514,7 @@ class _SessionPageState extends State<SessionPage> {
                             //autofocus: true,
                             textInputAction: TextInputAction.next,
                             textCapitalization: TextCapitalization.words,
-                            maxLength: 10,
+                            maxLength: 12,
                             decoration: new InputDecoration(
                               labelText: "Session Name",
                               fillColor: Colors.white,
@@ -603,7 +603,6 @@ class _SessionPageState extends State<SessionPage> {
                                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                   }
                                 });
-                                print(links);
                                 final SharedPreferences prefs = await _prefs;
                                 await prefs.setString('links', jsonEncode(links));
                                 await prefs.setString('sessions', jsonEncode(sessions));

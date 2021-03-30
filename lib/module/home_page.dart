@@ -157,6 +157,11 @@ class _HomePageState extends State<HomePage> {
     var link = prefs.getString('links')??'';
     var sess = prefs.getString('sessions')??'';
 
+
+    setState(() {
+      darkTheme = prefs.getBool('darkTheme')??false;
+    });
+
     if(tt.length!=0) {
       setState(() {
         timeTable = jsonDecode(tt);
@@ -296,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
-                        child: Icon((darkTheme)?Icons.nights_stay_outlined:Icons.wb_sunny_outlined),
+                        child: Icon((darkTheme)?Icons.nights_stay_outlined:Icons.wb_sunny_outlined,color: Colors.white,),
                       ),
                     )
                   ],

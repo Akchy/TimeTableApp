@@ -493,7 +493,6 @@ class _DayTimeTableState extends State<DayTimeTable> {
     newSession['name']=dropdownValue;
     newSession['sTime']=newStartTime;
     newSession['eTime']=newEndTime;
-    print('${timeTable[day]}');
     setState(() {
       timeTable[day][sessionIndex]=newSession;
     });
@@ -738,7 +737,6 @@ class _DayTimeTableState extends State<DayTimeTable> {
                                   return 0;
 
                               });
-                              print(timeTable);
                               addSession=false;
                             });
                             final SharedPreferences prefs = await _prefs;
