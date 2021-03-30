@@ -337,7 +337,6 @@ class _ExportDBState extends State<ExportDB> {
                             var tempLink = _data['links'];
 
                             final SharedPreferences prefs = await _prefs;
-                            await prefs.clear();
                             await prefs.setString('timetable', tempTT);
                             await prefs.setString('links', tempLink);
                             await prefs.setString('sessions',tempSession);
