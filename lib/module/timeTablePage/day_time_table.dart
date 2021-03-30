@@ -127,6 +127,12 @@ class _DayTimeTableState extends State<DayTimeTable> {
     super.initState();
     day = widget.day;
     checkSharedPref();
+    setState(() {
+      addSession=widget.add;
+    });
+    print(addSession);
+    if(addSession)
+      sessionAddFunction();
 
   }
 
@@ -209,7 +215,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
           child: FloatingActionButton.extended(
             label: const Text('Session'),
             icon: Icon(Icons.add_box_outlined,size: 35,),
-            onPressed:()=>sessionAddWidget(),
+            onPressed:()=>sessionAddFunction(),
           ),
         ):null,
 
@@ -583,7 +589,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
         });
   }
 
-  dynamic sessionAddWidget()async{
+  dynamic sessionAddFunction()async{
 
     if(update==false) {
       setState(() {

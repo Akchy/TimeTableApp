@@ -127,7 +127,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
                     InkWell(
                       onTap: ()async{
                         var flag =await Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DayTimeTable(day: day,add:false)),)??false;
+                          MaterialPageRoute(builder: (context) => DayTimeTable(day: day,add:true)),)??false;
                         if(flag==true)
                           checkSharedPref();
                       },
@@ -141,7 +141,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
                     InkWell(
                       onTap: ()async{
                         var flag =await Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DayTimeTable(day: day,add:true)),)??false;
+                          MaterialPageRoute(builder: (context) => DayTimeTable(day: day,add:false)),)??false;
                         if(flag==true)
                           checkSharedPref();
                       },
