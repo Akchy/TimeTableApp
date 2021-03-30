@@ -27,7 +27,7 @@ class _ExportDBState extends State<ExportDB> {
 
   GlobalKey globalKey = new GlobalKey();
   String _dataString = 'Class Time';
-  var import = true;
+  var import = false;
   var path='';
   var _data;
 
