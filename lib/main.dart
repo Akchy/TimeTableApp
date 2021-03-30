@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'module/export_page.dart';
 import 'module/home_page.dart';
 import 'module/session_page.dart';
@@ -18,15 +19,66 @@ void main() {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
 
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var theme = ThemeMode.system;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkSharedPref();
+  }
+
+  void checkSharedPref() async{
+
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    var dark = prefs.getBool('darkTheme')??false;
+    setState(() {
+      if(dark)
+        theme = ThemeMode.dark;
+      else
+        theme = ThemeMode.light;
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    checkSharedPref();
     return MaterialApp(
       title: 'Time Table',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        primaryColorLight: Colors.blue,
+        iconTheme: IconThemeData(
+          color: Colors.blue
+        ),
+        highlightColor: Colors.blue[400],
+
+        /* light theme settings */
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.cyanAccent
+        ),
+        errorColor: Colors.redAccent,
+
+
+        /* dark theme settings */
+      ),
+      themeMode: theme,
+      /* ThemeMode.system to follow system theme,
+         ThemeMode.light for light theme,
+         ThemeMode.dark for dark theme
+      */
+      debugShowCheckedModeBanner: false,
       home: MainPage(),
       routes: {
         Routes.home: (context) => HomePage(),

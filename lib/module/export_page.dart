@@ -27,7 +27,7 @@ class _ExportDBState extends State<ExportDB> {
 
   GlobalKey globalKey = new GlobalKey();
   String _dataString = 'Class Time';
-  var import = false;
+  var import = true;
   var path='';
   var _data;
 
@@ -137,7 +137,7 @@ class _ExportDBState extends State<ExportDB> {
                 margin: EdgeInsets.all(8),
                 padding: EdgeInsets.fromLTRB(20,10,10,25),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).bottomAppBarColor,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
@@ -205,15 +205,7 @@ class _ExportDBState extends State<ExportDB> {
         padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2.0),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(.6),
-                spreadRadius: 1,
-                blurRadius: 1, // changes position of shadow
-                offset: Offset(0,1)
-            ),
-          ],
-          color: Colors.blue,
+          color: Theme.of(context).highlightColor,
         ),
         child: Row(
           children: [
