@@ -180,15 +180,33 @@ class _DayTimeTableState extends State<DayTimeTable> {
             alignment:  (addSession)?Alignment.center:Alignment.topCenter,
             child: Stack(
               children: [
-                SingleChildScrollView(
+                if(!addSession)(ttClass.length!=0)?SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom:70.0),
                     child: Column(
                       children: ttListWidget(),
                     ),
                   ),
-                ),
-                if(addSession)addNewSession()
+                ):
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width*3/4,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Add your Time Table, I'm Empty", style: TextStyle(fontSize: 15),),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          child: Divider(thickness: 2,),
+                        ),
+                        SizedBox(height: 8,),
+                        Text("Don't forget to add your session in Sessions Tab")
+                      ],
+                    ),
+                  ),
+                )
+                else addNewSession()
               ],
             ),
           ),
@@ -666,7 +684,12 @@ class _DayTimeTableState extends State<DayTimeTable> {
                       ),
 
                       SizedBox(height: 10,),
-                      Text('Note: Goto Sessions in Menu > Create Session', style: TextStyle(fontSize: 13),textAlign: TextAlign.center,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Note to add new Session: \nGoto Sessions in Menu > Create Session', style: TextStyle(fontSize: 13),textAlign: TextAlign.center,),
+                        ],
+                      ),
                       SizedBox(height: 10,),
                       Row(
                         children: [

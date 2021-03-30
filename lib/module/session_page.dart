@@ -74,13 +74,25 @@ class _SessionPageState extends State<SessionPage> {
         appBar: AppBar(
           title: Text('Sessions'),
         ),
-          body: (ready)?Container(
+          body: (ready)?
+          Container(
             //padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:70.0),
-                child: Column(
-                  children: sessionListWidget(),
+            child: Align(
+              alignment: (links.length==0)?Alignment.center:Alignment.topCenter,
+              child: (links.length!=0)?
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom:70.0),
+                  child: Column(
+                    children: sessionListWidget(),
+                  ),
+                ),
+              ):
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width*3/4,
+                child: Center(
+                  child: Text("Add your Session with Links, I'm Empty", style: TextStyle(fontSize: 15),),
                 ),
               ),
             ),
