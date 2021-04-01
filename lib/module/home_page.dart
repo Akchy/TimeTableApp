@@ -1,11 +1,18 @@
 import 'dart:convert';
 
+import '../main.dart';
 import '../routes/Routes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
+
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import 'export_page.dart';
 
@@ -142,9 +149,25 @@ class _HomePageState extends State<HomePage> {
     currDay = day;
 
     checkSharedPref();
+    _configureSelectNotificationSubject();
+
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationSubject.stream.listen((String payload) async {
+      await Navigator.pushNamed(context, '/session');
+    });
+  }
+
+  @override
+  void dispose() {
+    didReceiveLocalNotificationSubject.close();
+    selectNotificationSubject.close();
+    super.dispose();
   }
 
   Future<void>  checkSharedPref() async{
+    //await flutterLocalNotificationsPlugin.cancelAll();
     final SharedPreferences prefs = await _prefs;
     //await prefs.clear();
    /* await prefs.clear();
@@ -444,7 +467,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       child: Center(child: Text('Break Time',style: TextStyle(color: Colors.white),)),
-                    )
+                    ),
                 ],
               ),
             )
@@ -468,6 +491,48 @@ class _HomePageState extends State<HomePage> {
           ),
         )
     );
+  }
+
+  Future<void> _showFullScreenNotification() async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        'scheduled title',
+        'scheduled body',
+        _nextInstanceOfMondayTenAM(),
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+                'full screen channel id',
+                'full screen channel name',
+                'full screen channel description',
+                priority: Priority.high,
+                importance: Importance.high,
+                fullScreenIntent: true)),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
+
+  }
+
+
+  tz.TZDateTime _nextInstanceOfTenAM() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 13,56);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }
+
+
+  tz.TZDateTime _nextInstanceOfMondayTenAM() {
+    tz.TZDateTime scheduledDate = _nextInstanceOfTenAM();
+    while (scheduledDate.weekday != DateTime.wednesday) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    print(scheduledDate);
+    return scheduledDate;
   }
 
   Widget freeDayWidget(){
