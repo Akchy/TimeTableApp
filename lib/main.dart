@@ -70,7 +70,7 @@ Future<void> main() async {
 
 
   const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('app_icon');
+  AndroidInitializationSettings('logo');
 
   /// Note: permissions aren't requested here just to demonstrate that can be
   /// done later

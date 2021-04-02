@@ -4,6 +4,8 @@ import 'package:class_time/strToTime.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:class_time/notification.dart';
+
 class DayTimeTable extends StatefulWidget {
 
   final String day;
@@ -109,6 +111,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
     ],
   };*/
 
+  var week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   var newStartTime, newEndTime;
 
@@ -530,6 +533,25 @@ class _DayTimeTableState extends State<DayTimeTable> {
         return 0;
 
     });
+    await NotificationClass().cancelAllNotification();
+    timeTable.forEach((key, value) async{
+      if(value.length!=0) {
+        for (var session in value) {
+          if(session['name']!='Free') {
+            var time = session['sTime'];
+            var dayInt = week.indexOf(key) + 1;
+            var hour = time.split(":")[0];
+            var min = time.split(":")[1];
+            var id = (dayInt * 100) + value.indexOf(session);
+            await NotificationClass().setNotification(id: id,
+                sessionName: session['name'],
+                hour: int.parse(hour),
+                min: int.parse(min),
+                dayInt: dayInt);
+          }
+        }
+      }
+    });
     final SharedPreferences prefs = await _prefs;
     await prefs.setString('timetable', jsonEncode(timeTable));
 
@@ -587,9 +609,13 @@ class _DayTimeTableState extends State<DayTimeTable> {
                         ),
                         MaterialButton(
                           onPressed: ()async{
+                            var index = timeTable[day].indexOf(session);
                             setState(() {
+                              update=false;
                               timeTable[day].remove(session);
                             });
+                            var id = 100*(week.indexOf(day)+1) + index;
+                            await NotificationClass().cancelNotification(id);
                             final SharedPreferences prefs = await _prefs;
                             await prefs.setString('timetable', jsonEncode(timeTable));
                             Navigator.pop(context);
@@ -609,6 +635,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
 
   dynamic sessionAddFunction()async{
 
+
     if(update==false) {
       setState(() {
         addSession = true;
@@ -617,6 +644,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
         newStartTime = '${time.hour}:${time.minute}';
         newEndTime = '${time.hour}:${time.minute}';
       });
+
       final SharedPreferences prefs = await _prefs;
       await prefs.setString('timetable', jsonEncode(timeTable));
     }
@@ -769,6 +797,25 @@ class _DayTimeTableState extends State<DayTimeTable> {
 
                               });
                               addSession=false;
+                            });
+                            await NotificationClass().cancelAllNotification();
+                            timeTable.forEach((key, value) async{
+                              if(value.length!=0) {
+                                for (var session in value) {
+                                  if(session['name']!='Free') {
+                                    var time = session['sTime'];
+                                    var dayInt = week.indexOf(key) + 1;
+                                    var hour = time.split(":")[0];
+                                    var min = time.split(":")[1];
+                                    var id = (dayInt * 100) + value.indexOf(session);
+                                    await NotificationClass().setNotification(id: id,
+                                        sessionName: session['name'],
+                                        hour: int.parse(hour),
+                                        min: int.parse(min),
+                                        dayInt: dayInt);
+                                  }
+                                }
+                              }
                             });
                             final SharedPreferences prefs = await _prefs;
                             await prefs.setString('timetable', jsonEncode(timeTable));

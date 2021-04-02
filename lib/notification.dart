@@ -6,6 +6,7 @@ import 'main.dart';
 class NotificationClass{
 
   Future<void> setNotification({id,dayInt, hour,min,sessionName}) async {
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         '$sessionName Session in 5 min',
@@ -45,7 +46,6 @@ class NotificationClass{
     while (scheduledDate.weekday != dayInt) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
-    print(scheduledDate);
     return scheduledDate;
   }
 

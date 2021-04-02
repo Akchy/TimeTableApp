@@ -160,7 +160,8 @@ class _NotificationPageState extends State<NotificationPage> {
                           });
                           setNotification();
                           final SharedPreferences prefs = await _prefs;
-                          prefs.setInt('notifTime',notifMap[newValue]);
+                          await prefs.setInt('notifTime',notifMap[newValue]);
+                          await prefs.setInt('isNotif', 1);
 
                           final snackBar = SnackBar(
                             behavior: SnackBarBehavior.floating,elevation: 6,
@@ -207,15 +208,21 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   void setNotification() {
-    timetable.forEach((key, value) {
+    timetable.forEach((key, value) async{
       if(value.length!=0) {
         for (var session in value) {
-          var time = session['sTime'];
-          var dayInt = week.indexOf(key) + 1;
-          var hour = time.split(":")[0];
-          var min = time.split(":")[1];
-          var id = (dayInt*100)+value.indexOf(session);
-          NotificationClass().setNotification(id:id,sessionName: session['name'], hour: int.parse(hour),min: int.parse(min),dayInt: dayInt);
+          if(session['name']!='Free') {
+            var time = session['sTime'];
+            var dayInt = week.indexOf(key) + 1;
+            var hour = time.split(":")[0];
+            var min = time.split(":")[1];
+            var id = (dayInt * 100) + value.indexOf(session);
+            await NotificationClass().setNotification(id: id,
+                sessionName: session['name'],
+                hour: int.parse(hour),
+                min: int.parse(min),
+                dayInt: dayInt);
+          }
         }
       }
     });

@@ -1,6 +1,8 @@
 
 import 'dart:convert';
 
+import 'package:class_time/notification.dart';
+
 import '../../module/timeTablePage/day_time_table.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +15,7 @@ class TimeTablePage extends StatefulWidget {
 
 class _TimeTablePageState extends State<TimeTablePage> {
 
+  var week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   var ready =true;
   var timeTable = {};
@@ -304,9 +307,14 @@ class _TimeTablePageState extends State<TimeTablePage> {
                         ),
                         MaterialButton(
                           onPressed: ()async{
+                            var len = timeTable[day].length;
                             setState(() {
                               timeTable[day]=[];
                             });
+                            var dayInt = (week.indexOf(day)+1);
+                            for(int id= 100*dayInt,j=0;j<len;id++,j++) {
+                              await NotificationClass().cancelNotification(id);
+                            }
                             Navigator.pop(context);
                             final SharedPreferences prefs = await _prefs;
                             await prefs.setString('timetable', jsonEncode(timeTable));
