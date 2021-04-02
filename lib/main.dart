@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:class_time/module/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
@@ -11,13 +12,93 @@ import 'module/session_page.dart';
 import 'module/timeTablePage/time_table_page.dart';
 import 'routes/Routes.dart';
 
-void main() {
+
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+/// Streams are created so that app can respond to notification-related events
+/// since the plugin is initialised in the `main` function
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
+BehaviorSubject<ReceivedNotification>();
+
+final BehaviorSubject<String> selectNotificationSubject =
+BehaviorSubject<String>();
+
+const MethodChannel platform =
+MethodChannel('app.davish.me/methodChannel');
+
+class ReceivedNotification {
+  ReceivedNotification({
+    this.id,
+    this.title,
+    this.body,
+    this.payload,
+  });
+
+  final int id;
+  final String title;
+  final String body;
+  final String payload;
+}
+
+String selectedNotificationPayload;
+
+/// IMPORTANT: running the following code on its own won't work as there is
+/// setup required for each platform head project.
+///
+/// Please download the complete example app from the GitHub repository where
+/// all the setup has been done
+
+
+NotificationAppLaunchDetails notificationAppLaunchDetails;
+
+Future<void> main() async {
+  // needed if you intend to initialize in the `main` function
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await _configureLocalTimeZone();
+
+  notificationAppLaunchDetails =
+  await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('logo');
+
+  /// Note: permissions aren't requested here just to demonstrate that can be
+  /// done later
+  final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String payload) async {
+        if (payload != null) {
+          debugPrint('notification payload: $payload');
+        }
+        selectedNotificationPayload = payload;
+        selectNotificationSubject.add(payload);
+      });
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(new MyApp());
   });
 }
+
+
+Future<void> _configureLocalTimeZone() async {
+  tz.initializeTimeZones();
+  final String timeZoneName =
+  await platform.invokeMethod<String>('getTimeZoneName');
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
+}
+
 
 class MyApp extends StatefulWidget {
 
@@ -85,6 +166,7 @@ class _MyAppState extends State<MyApp> {
         Routes.timetable: (context) => TimeTablePage(),
         Routes.session: (context) => SessionPage(),
         Routes.export: (context) => ExportDB(),
+        Routes.notification: (context) => NotificationPage(),
       },
     );
   }
@@ -125,6 +207,12 @@ class _MainPageState extends State<MainPage> {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ExportDB(path:_sharedFiles[0].path)));
       });
     });
+
+    /*if (notificationAppLaunchDetails.didNotificationLaunchApp ?? false) {
+      selectedNotificationPayload = notificationAppLaunchDetails.payload;
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SessionPage()));
+    }*/
+
   }
 
   @override

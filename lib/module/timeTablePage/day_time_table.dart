@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:class_time/strToTime.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:class_time/notification.dart';
 
 class DayTimeTable extends StatefulWidget {
 
@@ -108,6 +111,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
     ],
   };*/
 
+  var week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   var newStartTime, newEndTime;
 
@@ -130,7 +134,6 @@ class _DayTimeTableState extends State<DayTimeTable> {
     setState(() {
       addSession=widget.add;
     });
-    print(addSession);
     if(addSession)
       sessionAddFunction();
 
@@ -289,7 +292,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                       SizedBox(width: 15,),
                       DropdownButton<String>(
                         value: dropdownValue,
-                        icon: const Icon(Icons.arrow_downward),
+                        icon: const Icon(Icons.arrow_drop_down),
                         iconSize: 24,
                         elevation: 16,
                         underline: Container(
@@ -360,8 +363,8 @@ class _DayTimeTableState extends State<DayTimeTable> {
             children: [
               InkWell(
                 onTap:() {
-                  var sTemp = strToTime(newStartTime);
-                  var eTemp = strToTime(newEndTime);    // Checking if end time is greater than less time
+                  var sTemp = StrToTime().convert(newStartTime);
+                  var eTemp = StrToTime().convert(newEndTime);    // Checking if end time is greater than less time
                   if (sTemp<eTemp) {
                     if(update==true)
                       setState((){
@@ -522,13 +525,32 @@ class _DayTimeTableState extends State<DayTimeTable> {
     });
 
     timeTable[day].sort((a,b){
-      var aNum = strToTime(a['sTime']);
-      var bNum = strToTime(b['sTime']);
+      var aNum = StrToTime().convert(a['sTime']);
+      var bNum = StrToTime().convert(b['sTime']);
       if(aNum>bNum)
         return 1;
       else
         return 0;
 
+    });
+    await NotificationClass().cancelAllNotification();
+    timeTable.forEach((key, value) async{
+      if(value.length!=0) {
+        for (var session in value) {
+          if(session['name']!='Free') {
+            var time = session['sTime'];
+            var dayInt = week.indexOf(key) + 1;
+            var hour = time.split(":")[0];
+            var min = time.split(":")[1];
+            var id = (dayInt * 100) + value.indexOf(session);
+            await NotificationClass().setNotification(id: id,
+                sessionName: session['name'],
+                hour: int.parse(hour),
+                min: int.parse(min),
+                dayInt: dayInt);
+          }
+        }
+      }
     });
     final SharedPreferences prefs = await _prefs;
     await prefs.setString('timetable', jsonEncode(timeTable));
@@ -587,9 +609,13 @@ class _DayTimeTableState extends State<DayTimeTable> {
                         ),
                         MaterialButton(
                           onPressed: ()async{
+                            var index = timeTable[day].indexOf(session);
                             setState(() {
+                              update=false;
                               timeTable[day].remove(session);
                             });
+                            var id = 100*(week.indexOf(day)+1) + index;
+                            await NotificationClass().cancelNotification(id);
                             final SharedPreferences prefs = await _prefs;
                             await prefs.setString('timetable', jsonEncode(timeTable));
                             Navigator.pop(context);
@@ -609,6 +635,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
 
   dynamic sessionAddFunction()async{
 
+
     if(update==false) {
       setState(() {
         addSession = true;
@@ -617,6 +644,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
         newStartTime = '${time.hour}:${time.minute}';
         newEndTime = '${time.hour}:${time.minute}';
       });
+
       final SharedPreferences prefs = await _prefs;
       await prefs.setString('timetable', jsonEncode(timeTable));
     }
@@ -660,7 +688,7 @@ class _DayTimeTableState extends State<DayTimeTable> {
                           SizedBox(width: 15,),
                           DropdownButton<String>(
                             value: dropdownValue,
-                            icon: const Icon(Icons.arrow_downward),
+                            icon: const Icon(Icons.arrow_drop_down),
                             iconSize: 24,
                             elevation: 16,
                             underline: Container(
@@ -750,8 +778,8 @@ class _DayTimeTableState extends State<DayTimeTable> {
                       ),
                       MaterialButton(
                         onPressed: ()async{
-                          var sTemp = strToTime(newStartTime);
-                          var eTemp = strToTime(newEndTime);  // Checking if end time is greater than less time
+                          var sTemp = StrToTime().convert(newStartTime);
+                          var eTemp = StrToTime().convert(newEndTime);  // Checking if end time is greater than less time
                           if (sTemp<eTemp && dropdownValue!=null) {
                             Map<String,String> newSession={};
                             newSession['name']=dropdownValue;
@@ -760,8 +788,8 @@ class _DayTimeTableState extends State<DayTimeTable> {
                             setState(() {
                               timeTable[day].add(newSession);
                               timeTable[day].sort((a,b){
-                                var aNum = strToTime(a['sTime']);
-                                var bNum = strToTime(b['sTime']);
+                                var aNum = StrToTime().convert(a['sTime']);
+                                var bNum = StrToTime().convert(b['sTime']);
                                 if(aNum>bNum)
                                   return 1;
                                 else
@@ -769,6 +797,25 @@ class _DayTimeTableState extends State<DayTimeTable> {
 
                               });
                               addSession=false;
+                            });
+                            await NotificationClass().cancelAllNotification();
+                            timeTable.forEach((key, value) async{
+                              if(value.length!=0) {
+                                for (var session in value) {
+                                  if(session['name']!='Free') {
+                                    var time = session['sTime'];
+                                    var dayInt = week.indexOf(key) + 1;
+                                    var hour = time.split(":")[0];
+                                    var min = time.split(":")[1];
+                                    var id = (dayInt * 100) + value.indexOf(session);
+                                    await NotificationClass().setNotification(id: id,
+                                        sessionName: session['name'],
+                                        hour: int.parse(hour),
+                                        min: int.parse(min),
+                                        dayInt: dayInt);
+                                  }
+                                }
+                              }
                             });
                             final SharedPreferences prefs = await _prefs;
                             await prefs.setString('timetable', jsonEncode(timeTable));
@@ -809,9 +856,5 @@ class _DayTimeTableState extends State<DayTimeTable> {
     );
   }
 
-  int strToTime(var str){
-    TimeOfDay _startTime = TimeOfDay(hour:int.parse(str.split(":")[0]),minute: int.parse(str.split(":")[1]));
-    int strMin = _startTime.hour *60+ _startTime.minute;  //Converting to min
-    return strMin;
-  }
+  
 }
