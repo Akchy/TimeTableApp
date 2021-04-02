@@ -153,10 +153,10 @@ class _NotificationPageState extends State<NotificationPage> {
                             dropdownValue=newValue;
                             changed=true;
                           });
-                          setNotification();
                           final SharedPreferences prefs = await _prefs;
                           await prefs.setInt('notifTime',notifMap[newValue]);
-                          await prefs.setInt('isNotif', 1);
+
+                          setNotification();
 
                           final snackBar = SnackBar(
                             behavior: SnackBarBehavior.floating,elevation: 6,
