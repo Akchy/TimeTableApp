@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:class_time/strToTime.dart';
+
 import '../main.dart';
 import '../routes/Routes.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +12,6 @@ import 'dart:async';
 
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:rxdart/subjects.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'export_page.dart';
@@ -155,7 +155,15 @@ class _HomePageState extends State<HomePage> {
 
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String payload) async {
-      await Navigator.pushNamed(context, '/session');
+      if(!notificationAppLaunchDetails.didNotificationLaunchApp??false) {
+        var link = links[payload];
+        print('$payload -- ${links[payload]}');
+        if (link != -1)
+          await launch(link);
+      }
+      else{
+        await Navigator.pushNamed(context, '/home');
+      }
     });
   }
 
@@ -228,12 +236,7 @@ class _HomePageState extends State<HomePage> {
 
     }
   }
-  int strToTime(var str){
-    TimeOfDay _startTime = TimeOfDay(hour:int.parse(str.split(":")[0]),minute: int.parse(str.split(":")[1]));
-    int strMin = _startTime.hour *60+ _startTime.minute;  //Converting to min
-    return strMin;
-  }
-
+ 
   void initialTimeColor(){
     for (var i=0;i<ttDay.length;i++)
       timingColor.insert(i, -1);
@@ -250,12 +253,12 @@ class _HomePageState extends State<HomePage> {
         sTimeToday.add(x['sTime']);
         eTimeToday.add(x['eTime']);
       }
-      var dayEndTime = strToTime(eTimeToday[eTimeToday.length-1]);
+      var dayEndTime = StrToTime().convert(eTimeToday[eTimeToday.length-1]);
       for (var start in sTimeToday ){
-        var sessionTime = strToTime(start);
+        var sessionTime = StrToTime().convert(start);
         var sessionIndex = sTimeToday.indexOf(start);
         var endTime = eTimeToday[sessionIndex];
-        var sessionEndTime = strToTime(endTime);
+        var sessionEndTime = StrToTime().convert(endTime);
         if(sessionTime <= currentTime && currentTime<= dayEndTime){
           if(sessionEndTime >= currentTime)
             setState(() {
@@ -366,10 +369,17 @@ class _HomePageState extends State<HomePage> {
                   leading: Icon(Icons.share_outlined,),
                   onTap: ()async{
                     Navigator.pop(context);
-                    var flag =await
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ExportDB(path:'')))??false;
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ExportDB(path:'')));
+                  }
+              ),
+              ListTile(
+                  title: Text('Notification',),
+                  leading: Icon(Icons.notifications_active_outlined,),
+                  onTap: ()async{
+                    Navigator.pop(context);
+                    var flag =await Navigator.pushNamed(context, Routes.notification)??false;
                     if(flag==true) {
-                      checkSharedPref();
+                      // Notification Manager
                     }
                   }
               ),
@@ -400,7 +410,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         DropdownButton<String>(
                           value: dropdownValue,
-                          icon: const Icon(Icons.arrow_downward),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 24,
                           elevation: 16,
                           underline: Container(
@@ -491,48 +501,6 @@ class _HomePageState extends State<HomePage> {
           ),
         )
     );
-  }
-
-  Future<void> _showFullScreenNotification() async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        'scheduled title',
-        'scheduled body',
-        _nextInstanceOfMondayTenAM(),
-        const NotificationDetails(
-            android: AndroidNotificationDetails(
-                'full screen channel id',
-                'full screen channel name',
-                'full screen channel description',
-                priority: Priority.high,
-                importance: Importance.high,
-                fullScreenIntent: true)),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
-
-  }
-
-
-  tz.TZDateTime _nextInstanceOfTenAM() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 13,56);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    return scheduledDate;
-  }
-
-
-  tz.TZDateTime _nextInstanceOfMondayTenAM() {
-    tz.TZDateTime scheduledDate = _nextInstanceOfTenAM();
-    while (scheduledDate.weekday != DateTime.wednesday) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    print(scheduledDate);
-    return scheduledDate;
   }
 
   Widget freeDayWidget(){

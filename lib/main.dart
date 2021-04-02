@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:class_time/module/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
@@ -165,6 +166,7 @@ class _MyAppState extends State<MyApp> {
         Routes.timetable: (context) => TimeTablePage(),
         Routes.session: (context) => SessionPage(),
         Routes.export: (context) => ExportDB(),
+        Routes.notification: (context) => NotificationPage(),
       },
     );
   }
