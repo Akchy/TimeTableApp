@@ -11,9 +11,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-
 import 'export_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -157,7 +154,6 @@ class _HomePageState extends State<HomePage> {
     selectNotificationSubject.stream.listen((String payload) async {
       if(!notificationAppLaunchDetails.didNotificationLaunchApp??false) {
         var link = links[payload];
-        print('$payload -- ${links[payload]}');
         if (link != -1)
           await launch(link);
       }

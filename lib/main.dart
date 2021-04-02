@@ -12,8 +12,6 @@ import 'module/session_page.dart';
 import 'module/timeTablePage/time_table_page.dart';
 import 'routes/Routes.dart';
 
-
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:timezone/data/latest.dart' as tz;
