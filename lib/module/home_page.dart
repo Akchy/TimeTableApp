@@ -22,109 +22,146 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
 
-
-   /*var links = {
-     'DMDW': 'https://meet.google.com/vrr-ppbk-fqm',
-     'ES': 'https://meet.google.com/dzu-gztb-dac',
-     'Maths': 'https://meet.google.com/vsv-hgrm-dkg',
-     'PIS': 'https://meet.google.com/jhj-vdps-orw',
-   };
-   var sessions = {'DMDW':'DMDW1','ES':'ES1','Maths':'Maths1','PIS':'PIS1','Free':'Free1'};
-   var timeTable={
-     'Monday':[
-       {
-         'name':'DMDW',
-         'sTime':'8:30',
-         'eTime':'9:20'
-       },
-       {
-         'name':'ES',
-         'sTime':'9:30',
-         'eTime':'10:20'
-       },
-       {
-         'name':'PIS',
-         'sTime':'10:30',
-         'eTime':'11:20'
-       },
-       {
-         'name':'Maths',
-         'sTime':'11:40',
-         'eTime':'12:30'
-       },
-       {
-         'name':'Free',
-         'sTime':'12:40',
-         'eTime':'13:30'
-       },
-     ],
-     'Tuesday':[
-       {
-         'name':'ES',
-         'sTime':'8:30',
-         'eTime':'9:20'
-       },
-       {
-         'name':'DMDW',
-         'sTime':'9:30',
-         'eTime':'10:20'
-       },
-       {
-         'name':'Free',
-         'sTime':'10:30',
-         'eTime':'11:20'
-       },
-       {
-         'name':'Maths',
-         'sTime':'11:40',
-         'eTime':'12:30'
-       },
-       {
-         'name':'PIS',
-         'sTime':'12:40',
-         'eTime':'13:30'
-       },
-     ],
-     'Wednesday':[
-       {
-         'name':'Free',
-         'sTime':'8:30',
-         'eTime':'9:20'
-       },
-       {
-         'name':'PIS',
-         'sTime':'9:30',
-         'eTime':'10:20'
-       },
-       {
-         'name':'DMDW',
-         'sTime':'10:30',
-         'eTime':'11:20'
-       },
-       {
-         'name':'Maths',
-         'sTime':'11:40',
-         'eTime':'12:30'
-       },
-       {
-         'name':'ES',
-         'sTime':'12:40',
-         'eTime':'13:30'
-       },
-     ],
-     'Thursday':[],
-     'Friday':[],
-     'Saturday':[],
-     'Sunday':[]
-   };*/
-
   var timeTable={};
   var sessions ={};
   var links = {};
    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  var tempTT = {'Monday':[],'Tuesday':[],'Wednesday':[],'Thursday':[],'Friday':[],'Saturday':[],'Sunday':[]};
-  var tempSession = {'Free':'Free'};
+  var tempTT = {'Monday':[
+    {
+      'name':'Maths',
+      'sTime':'8:30',
+      'eTime':'9:20'
+    },
+    {
+      'name':'Science',
+      'sTime':'9:30',
+      'eTime':'10:20'
+    },
+    {
+      'name':'English',
+      'sTime':'10:30',
+      'eTime':'11:20'
+    },
+    {
+      'name':'Hindi',
+      'sTime':'11:40',
+      'eTime':'12:30'
+    },
+    {
+      'name':'Social',
+      'sTime':'12:40',
+      'eTime':'13:30'
+    },
+    ],
+    'Tuesday':[{
+    'name':'Maths',
+    'sTime':'8:30',
+    'eTime':'9:20'
+    },
+    {
+      'name':'Science',
+      'sTime':'9:30',
+      'eTime':'10:20'
+    },
+    {
+      'name':'English',
+      'sTime':'10:30',
+      'eTime':'11:20'
+    },
+    {
+      'name':'Hindi',
+      'sTime':'11:40',
+      'eTime':'12:30'
+    },
+    {
+      'name':'Social',
+      'sTime':'12:40',
+      'eTime':'13:30'
+    },],
+    'Wednesday':[{
+    'name':'Maths',
+    'sTime':'8:30',
+    'eTime':'9:20'
+    },
+    {
+      'name':'Science',
+      'sTime':'9:30',
+      'eTime':'10:20'
+    },
+    {
+      'name':'English',
+      'sTime':'10:30',
+      'eTime':'11:20'
+    },
+    {
+      'name':'Hindi',
+      'sTime':'11:40',
+      'eTime':'12:30'
+    },
+    {
+      'name':'Social',
+      'sTime':'12:40',
+      'eTime':'13:30'
+    },],
+    'Thursday':[{
+    'name':'Maths',
+    'sTime':'8:30',
+    'eTime':'9:20'
+   },
+    {
+      'name':'Science',
+      'sTime':'9:30',
+      'eTime':'10:20'
+    },
+    {
+      'name':'English',
+      'sTime':'10:30',
+      'eTime':'11:20'
+    },
+    {
+      'name':'Hindi',
+      'sTime':'11:40',
+      'eTime':'12:30'
+    },
+    {
+      'name':'Social',
+      'sTime':'12:40',
+      'eTime':'13:30'
+    },],
+    'Friday':[{
+    'name':'Maths',
+    'sTime':'8:30',
+    'eTime':'9:20'
+    },
+    {
+      'name':'Science',
+      'sTime':'9:30',
+      'eTime':'10:20'
+    },
+    {
+      'name':'English',
+      'sTime':'10:30',
+      'eTime':'11:20'
+    },
+    {
+      'name':'Hindi',
+      'sTime':'11:40',
+      'eTime':'12:30'
+    },
+    {
+      'name':'Social',
+      'sTime':'12:40',
+      'eTime':'13:30'
+    },],'Saturday':[],'Sunday':[]};
+  var tempSession = {'Maths':'Maths', 'Science':'Science', 'Social':'Social','English':'English', 'Hindi':'Hindi','Free':'Free'};
+  var tempLink = {
+    'Maths':'https://meet.google.com',
+    'Science':'https://meet.google.com',
+    'Social':'https://meet.google.com',
+    'Hindi':'https://meet.google.com',
+    'English':'https://meet.google.com',
+  };
   var timingColor=[];
   var week = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   var classes,ttDay;
@@ -189,28 +226,22 @@ class _HomePageState extends State<HomePage> {
       darkTheme = prefs.getBool('darkTheme')??false;
     });
 
-    if(tt.length!=0) {
-      setState(() {
-        timeTable = jsonDecode(tt);
-      });
-    }
-    else{
+    if(tt.length==0) {
       tt = jsonEncode(tempTT);
-      await prefs.setString('timetable', jsonEncode(tempTT));
+      await prefs.setString('timetable', tt);
     }
-    if(link.length!=0)
-      setState(() {
-        links = jsonDecode(link);
-      });
-    if(sess.length!=0)
-      setState(() {
-        sessions = jsonDecode(sess);
-      });
-    else {
+    if(link.length==0) {
+      link = jsonEncode(tempLink);
+      await prefs.setString('links', link);
+    }
+    if(sess.length==0) {
       sess = jsonEncode(tempSession);
-      await prefs.setString('sessions', jsonEncode(tempSession));
+      await prefs.setString('sessions', sess);
     }
     setState(() {
+      timeTable = jsonDecode(tt);
+      links = jsonDecode(link);
+      sessions = jsonDecode(sess);
       ready=true;
     });
 
@@ -365,7 +396,10 @@ class _HomePageState extends State<HomePage> {
                   leading: Icon(Icons.share_outlined,),
                   onTap: ()async{
                     Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ExportDB(path:'')));
+                    var flag =Navigator.push(context, MaterialPageRoute(builder: (context) => ExportDB(path:'')))??false;
+                    if(flag==true) {
+                      checkSharedPref();
+                    }
                   }
               ),
               ListTile(
@@ -373,10 +407,7 @@ class _HomePageState extends State<HomePage> {
                   leading: Icon(Icons.notifications_active_outlined,),
                   onTap: ()async{
                     Navigator.pop(context);
-                    var flag =await Navigator.pushNamed(context, Routes.notification)??false;
-                    if(flag==true) {
-                      // Notification Manager
-                    }
+                    await Navigator.pushNamed(context, Routes.notification);
                   }
               ),
               Divider(),

@@ -55,148 +55,142 @@ class _NotificationPageState extends State<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: ()async{
-        Navigator.pop(context,changed);
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Notifications'),
-        ),
-        body: (ready)?Container(
-          padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).bottomAppBarColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(4),
-                        bottomLeft: Radius.circular(4),
-                        bottomRight: Radius.circular(4)
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset: Offset(1, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Notification',style: TextStyle(fontSize: 17),),
-                      Switch(
-                        onChanged: (value) async{
-                          setState(() {
-                            notification=value;
-                            if(notification)
-                              setNotification();
-                            else
-                              NotificationClass().cancelAllNotification();
-                          });
-                          final SharedPreferences prefs = await _prefs;
-                          prefs.setBool('notification',value);
-                        },
-                        value: notification,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                if(notification)Container(
-                  width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).bottomAppBarColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(4),
-                        bottomLeft: Radius.circular(4),
-                        bottomRight: Radius.circular(4)
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset: Offset(1, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.notifications_active_outlined),
-                          SizedBox(width: 15,),
-                          Text('Notify Before'),
-                        ],
-                      ),DropdownButton<String>(
-                        value: dropdownValue,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        elevation: 16,
-
-                        underline: Container(
-                          height: 2,
-                          color: Colors.transparent,
-                        ),
-                        onChanged: (String newValue) async{
-                          setState(() {
-                            dropdownValue=newValue;
-                            changed=true;
-                          });
-                          final SharedPreferences prefs = await _prefs;
-                          await prefs.setInt('notifTime',notifMap[newValue]);
-
-                          setNotification();
-
-                          final snackBar = SnackBar(
-                            behavior: SnackBarBehavior.floating,elevation: 6,
-                            margin: EdgeInsets.all(10),
-                            duration: Duration(seconds: 1),
-                            content: Center(heightFactor: 1,child: Text('Time Updated')),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        },
-                        items: notifList
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value,style: TextStyle(fontSize: 14),),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ):Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Notifications'),
+      ),
+      body: (ready)?Container(
+        padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorLight),
-                  backgroundColor: Colors.transparent,
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4),
+                      bottomLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(4)
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: Offset(1, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Notification',style: TextStyle(fontSize: 17),),
+                    Switch(
+                      onChanged: (value) async{
+                        setState(() {
+                          notification=value;
+                          if(notification)
+                            setNotification();
+                          else
+                            NotificationClass().cancelAllNotification();
+                        });
+                        final SharedPreferences prefs = await _prefs;
+                        prefs.setBool('notification',value);
+                      },
+                      value: notification,
+                    )
+                  ],
                 ),
               ),
-              SizedBox(height: 10.0),
-              Text('Loading',style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18.0
-              ),)
+              SizedBox(height: 20,),
+              if(notification)Container(
+                width: double.maxFinite,
+                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4),
+                      bottomLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(4)
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: Offset(1, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.notifications_active_outlined),
+                        SizedBox(width: 15,),
+                        Text('Notify Before'),
+                      ],
+                    ),DropdownButton<String>(
+                      value: dropdownValue,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      elevation: 16,
+
+                      underline: Container(
+                        height: 2,
+                        color: Colors.transparent,
+                      ),
+                      onChanged: (String newValue) async{
+                        setState(() {
+                          dropdownValue=newValue;
+                          changed=true;
+                        });
+                        final SharedPreferences prefs = await _prefs;
+                        await prefs.setInt('notifTime',notifMap[newValue]);
+
+                        setNotification();
+
+                        final snackBar = SnackBar(
+                          behavior: SnackBarBehavior.floating,elevation: 6,
+                          margin: EdgeInsets.all(10),
+                          duration: Duration(seconds: 1),
+                          content: Center(heightFactor: 1,child: Text('Time Updated')),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                      items: notifList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,style: TextStyle(fontSize: 14),),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
+        )
+      ):Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColorLight),
+                backgroundColor: Colors.transparent,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Text('Loading',style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 18.0
+            ),)
+          ],
         ),
       ),
     );

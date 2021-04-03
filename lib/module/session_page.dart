@@ -201,6 +201,7 @@ class _SessionPageState extends State<SessionPage> {
                     TextFormField(
                       decoration: new InputDecoration(
                         labelText: "Session Link",
+                        hintText: 'https://',
                         fillColor: Colors.white,
                         isDense: true,
                         border: new OutlineInputBorder(
@@ -538,13 +539,6 @@ class _SessionPageState extends State<SessionPage> {
                               ),
                               //fillColor: Colors.green
                             ),
-                            validator: (val) {
-                              if(val.length==0) {
-                                return "Name cannot be empty";
-                              }else{
-                                return null;
-                              }
-                            },
                             controller: _nameController,
                             keyboardType: TextInputType.text,
                           ),
@@ -552,6 +546,7 @@ class _SessionPageState extends State<SessionPage> {
                           TextFormField(
                             decoration: new InputDecoration(
                               labelText: "Session Link",
+                              hintText: 'https://',
                               fillColor: Colors.white,
                               isDense: true,
                               border: new OutlineInputBorder(
@@ -561,13 +556,6 @@ class _SessionPageState extends State<SessionPage> {
                               ),
                               //fillColor: Colors.green
                             ),
-                            validator: (val) {
-                              if(val.length==0) {
-                                return "Link cannot be empty";
-                              }else{
-                                return null;
-                              }
-                            },
                             controller: _linkController,
                             keyboardType: TextInputType.url,
                           ),
